@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BrownieNote · Demostración</title>
+  <meta name="description" content="BrownieNote es una app de notas y tareas de código abierto hecha con Flutter. Esta página muestra lo que se puede construir.">
+  <style>
+    :root {
+      --bg: #faf7f2; --card: #ffffff; --text: #2b2118; --sub: #6b5d50;
+      --accent: #8b4a1f; --accent-soft: #f3e4d6; --line: #e7ddd1;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #1b1612; --card: #26201b; --text: #f3ece4; --sub: #b7a898;
+        --accent: #e0a070; --accent-soft: #3a2d22; --line: #3d332b;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #1b1612; --card: #26201b; --text: #f3ece4; --sub: #b7a898;
+      --accent: #e0a070; --accent-soft: #3a2d22; --line: #3d332b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.6;
+    }
+    main { max-width: 760px; margin: 0 auto; padding: 48px 16px; }
+    h1 { font-size: 2.2rem; margin: 0 0 8px; }
+    h2 { font-size: 1.3rem; margin: 40px 0 12px; }
+    p { margin: 0 0 14px; color: var(--sub); }
+    .badge {
+      display: inline-block; padding: 4px 12px; border-radius: 999px;
+      background: var(--accent-soft); color: var(--accent);
+      font-size: .85rem; font-weight: 600; margin-bottom: 16px;
+    }
+    .notice {
+      border-left: 4px solid var(--accent); background: var(--card);
+      padding: 16px 18px; border-radius: 8px; margin: 24px 0;
+    }
+    .notice p { color: var(--text); margin: 0; }
+    ul.features { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+    ul.features li {
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: 10px; padding: 14px 16px;
+    }
+    ul.features strong { display: block; margin-bottom: 2px; }
+    ul.features span { color: var(--sub); font-size: .95rem; }
+    code, pre {
+      font-family: ui-monospace, Consolas, monospace; font-size: .9rem;
+    }
+    pre {
+      background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+      padding: 12px 14px; overflow-x: auto; color: var(--text);
+    }
+    a { color: var(--accent); }
+    footer {
+      margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
+      color: var(--sub); font-size: .9rem;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <span class="badge">Código abierto · GPL-3.0</span>
+    <h1>BrownieNote</h1>
+    <p>Notas y tareas en un solo lugar, hechas con Flutter. Tus datos se guardan en tu dispositivo: no necesitas cuenta ni conexión.</p>
+
+    <div class="notice">
+      <p><strong>Esta página es una demostración.</strong> BrownieNote es una app de código abierto que muestra lo que se puede construir con Flutter. Es un ejemplo de mi trabajo como desarrollador, no un servicio en línea.</p>
+    </div>
+
+    <h2>Lo que incluye</h2>
+    <ul class="features">
+      <li><strong>Cuadernos y conjuntos de notas</strong><span>Organiza tus notas en cuadernos y agrúpalas en conjuntos.</span></li>
+      <li><strong>Editor por bloques</strong><span>Texto, listas, títulos e imágenes en bloques.</span></li>
+      <li><strong>Tareas con prioridad</strong><span>Fechas, horas, prioridades y adjuntos. Vista de próximas tareas.</span></li>
+      <li><strong>Calendario</strong><span>Revisa las notas y tareas de cada día.</span></li>
+      <li><strong>Modo claro y oscuro</strong><span>Sigue la configuración de tu sistema.</span></li>
+    </ul>
+
+    <h2>Descargarla</h2>
+    <p>Versión de escritorio para Windows (64 bits). Descomprime el zip y ejecuta <code>browninote.exe</code>.</p>
+    <p><a href="https://github.com/oscarrdel/BrownieNote/releases/latest">Descargar BrownieNote para Windows</a></p>
+
+    <h2>Probarla</h2>
+    <p>El código está en GitHub. Para ejecutarla en tu computadora necesitas <a href="https://docs.flutter.dev/get-started/install">Flutter</a>:</p>
+    <pre>git clone https://github.com/oscarrdel/BrownieNote.git
+cd BrownieNote/browninote
+flutter pub get
+flutter run</pre>
+
+    <h2>Licencia</h2>
+    <p>BrownieNote se publica bajo la licencia <a href="https://www.gnu.org/licenses/gpl-3.0.html">GPL-3.0</a>. Puedes usar, estudiar, modificar y compartir el código bajo esos términos.</p>
+
+    <footer>
+      Hecha por Oscar Reyes con Flutter · <a href="https://github.com/oscarrdel/BrownieNote">Código en GitHub</a>
+    </footer>
+  </main>
+</body>
+</html>
