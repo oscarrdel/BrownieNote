@@ -3,104 +3,383 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BrownieNote · Demostración</title>
-  <meta name="description" content="BrownieNote es una app de notas y tareas de código abierto hecha con Flutter. Esta página muestra lo que se puede construir.">
+  <title>BrownieNote · Notas y tareas</title>
+  <meta name="description" content="BrownieNote: notas por bloques, cuadernos, tareas con prioridad y calendario. Código abierto, hecha con Flutter. Tus datos se quedan en tu dispositivo.">
+  <meta name="theme-color" content="#5C4EE5">
+  <link rel="icon" href="app/icons/Icon-192.png">
   <style>
+    @font-face {
+      font-family: 'Outfit';
+      src: url('fonts-outfit.ttf') format('truetype');
+      font-weight: 100 900;
+      font-display: swap;
+    }
+
+    /* Paleta de la app (lib/theme/app_theme.dart) */
     :root {
-      --bg: #faf7f2; --card: #ffffff; --text: #2b2118; --sub: #6b5d50;
-      --accent: #8b4a1f; --accent-soft: #f3e4d6; --line: #e7ddd1;
+      --bg: #F5F4FF;
+      --surface: #FFFFFF;
+      --surface-var: #EEECFF;
+      --primary: #5C4EE5;
+      --secondary: #9B8BFF;
+      --text: #1A1730;
+      --subtext: #6E6893;
+      --divider: #E0DDF5;
+      --mint: #4EE5B0;
+      --amber: #E5A84E;
+      --sky: #4E9EE5;
+      --coral: #E5524E;
+      --violet: #D74EE5;
     }
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme="light"]) {
-        --bg: #1b1612; --card: #26201b; --text: #f3ece4; --sub: #b7a898;
-        --accent: #e0a070; --accent-soft: #3a2d22; --line: #3d332b;
+        --bg: #0F0E1A;
+        --surface: #1A1830;
+        --surface-var: #242240;
+        --primary: #7B6FFF;
+        --secondary: #B3A9FF;
+        --text: #ECE9FF;
+        --subtext: #9B96C4;
+        --divider: #2D2B4E;
       }
     }
     :root[data-theme="dark"] {
-      --bg: #1b1612; --card: #26201b; --text: #f3ece4; --sub: #b7a898;
-      --accent: #e0a070; --accent-soft: #3a2d22; --line: #3d332b;
+      --bg: #0F0E1A;
+      --surface: #1A1830;
+      --surface-var: #242240;
+      --primary: #7B6FFF;
+      --secondary: #B3A9FF;
+      --text: #ECE9FF;
+      --subtext: #9B96C4;
+      --divider: #2D2B4E;
     }
+
     * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
     body {
-      margin: 0; background: var(--bg); color: var(--text);
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      line-height: 1.6;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
     }
-    main { max-width: 760px; margin: 0 auto; padding: 48px 16px; }
-    h1 { font-size: 2.2rem; margin: 0 0 8px; }
-    h2 { font-size: 1.3rem; margin: 40px 0 12px; }
-    p { margin: 0 0 14px; color: var(--sub); }
-    .badge {
-      display: inline-block; padding: 4px 12px; border-radius: 999px;
-      background: var(--accent-soft); color: var(--accent);
-      font-size: .85rem; font-weight: 600; margin-bottom: 16px;
+    a { color: var(--primary); }
+    .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+    /* ── Barra superior ───────────────────────────── */
+    header.top {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 0;
     }
-    .notice {
-      border-left: 4px solid var(--accent); background: var(--card);
-      padding: 16px 18px; border-radius: 8px; margin: 24px 0;
+    .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; text-decoration: none; color: var(--text); }
+    .logo-mark {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: grid; place-items: center; color: #fff; font-weight: 800;
     }
-    .notice p { color: var(--text); margin: 0; }
-    ul.features { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
-    ul.features li {
-      background: var(--card); border: 1px solid var(--line);
-      border-radius: 10px; padding: 14px 16px;
+    nav a { color: var(--subtext); text-decoration: none; margin-left: 18px; font-size: .95rem; }
+    nav a:hover { color: var(--text); }
+
+    /* ── Hero ─────────────────────────────────────── */
+    .hero {
+      display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px;
+      align-items: center; padding: 40px 0 64px;
     }
-    ul.features strong { display: block; margin-bottom: 2px; }
-    ul.features span { color: var(--sub); font-size: .95rem; }
-    code, pre {
-      font-family: ui-monospace, Consolas, monospace; font-size: .9rem;
+    .pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--surface-var); color: var(--primary);
+      border-radius: 999px; padding: 6px 14px; font-size: .85rem; font-weight: 600;
     }
+    .pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--mint); }
+    h1 {
+      font-size: clamp(2.4rem, 5.5vw, 3.8rem); line-height: 1.05;
+      letter-spacing: -.02em; margin: 18px 0 16px; font-weight: 800;
+    }
+    h1 .grad {
+      background: linear-gradient(90deg, var(--primary), var(--violet));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .lead { font-size: 1.12rem; color: var(--subtext); max-width: 34rem; margin: 0 0 28px; }
+    .cta { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 22px; border-radius: 14px; font-weight: 600; text-decoration: none;
+      font-size: 1rem; transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: var(--primary); color: #fff;
+      box-shadow: 0 10px 30px -10px var(--primary);
+    }
+    .btn-ghost { background: var(--surface); color: var(--text); border: 1px solid var(--divider); }
+    .note { font-size: .88rem; color: var(--subtext); margin-top: 16px; }
+
+    /* ── Maqueta del teléfono ─────────────────────── */
+    .phone-wrap { position: relative; display: flex; justify-content: center; }
+    .phone-wrap::before {
+      content: ""; position: absolute; inset: -30px -20px auto -20px; height: 80%;
+      background: radial-gradient(closest-side, var(--secondary), transparent);
+      opacity: .35; filter: blur(10px); z-index: 0;
+    }
+    .phone {
+      position: relative; z-index: 1;
+      width: 290px; background: var(--surface); border-radius: 38px;
+      padding: 14px; border: 1px solid var(--divider);
+      box-shadow: 0 40px 80px -30px rgba(40, 30, 120, .45);
+      transform: rotate(-3deg);
+    }
+    .screen { background: var(--bg); border-radius: 26px; padding: 18px 14px 20px; min-height: 460px; }
+    .screen h3 { margin: 4px 2px 2px; font-size: 1.25rem; }
+    .screen .meta { color: var(--subtext); font-size: .8rem; margin: 0 2px 14px; }
+    .tile {
+      border-radius: 18px; padding: 14px; color: #fff; margin-bottom: 10px;
+      display: flex; justify-content: space-between; align-items: flex-end; min-height: 74px;
+    }
+    .tile b { font-size: 1rem; }
+    .tile small { opacity: .9; font-size: .78rem; }
+    .tile .emoji { font-size: 1.5rem; }
+    .task {
+      background: var(--surface); border-radius: 14px; padding: 12px 14px;
+      margin-bottom: 8px; display: flex; gap: 10px; align-items: center; font-size: .92rem;
+    }
+    .dot { width: 12px; height: 12px; border-radius: 50%; flex: 0 0 12px; }
+    .task .tag { margin-left: auto; font-size: .72rem; font-weight: 600; padding: 3px 8px; border-radius: 999px; }
+
+    /* ── Secciones ────────────────────────────────── */
+    section { padding: 56px 0; }
+    .eyebrow { color: var(--primary); font-weight: 700; font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; }
+    h2 { font-size: clamp(1.7rem, 3.5vw, 2.4rem); letter-spacing: -.015em; margin: 8px 0 12px; line-height: 1.15; }
+    .sub { color: var(--subtext); max-width: 40rem; margin: 0 0 32px; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+    .card {
+      background: var(--surface); border: 1px solid var(--divider);
+      border-radius: 22px; padding: 22px; transition: transform .2s ease, border-color .2s ease;
+    }
+    .card:hover { transform: translateY(-4px); border-color: var(--secondary); }
+    .icon {
+      width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center;
+      font-size: 1.35rem; margin-bottom: 14px; color: #fff;
+    }
+    .card h3 { margin: 0 0 6px; font-size: 1.08rem; }
+    .card p { margin: 0; color: var(--subtext); font-size: .95rem; }
+
+    .split {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    .panel {
+      border-radius: 26px; padding: 30px; color: #fff;
+      background: linear-gradient(140deg, var(--primary), #3B2FB8);
+      position: relative; overflow: hidden;
+    }
+    .panel.alt { background: linear-gradient(140deg, #1C7C5C, #4EE5B0); color: #06241a; }
+    .panel h3 { margin: 0 0 10px; font-size: 1.4rem; }
+    .panel p { margin: 0 0 14px; opacity: .92; }
+    .panel ul { margin: 0; padding-left: 18px; }
+    .panel li { margin: 6px 0; }
+
+    .steps { counter-reset: s; display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+    .steps li {
+      counter-increment: s; background: var(--surface); border: 1px solid var(--divider);
+      border-radius: 18px; padding: 18px 18px 18px 64px; position: relative;
+    }
+    .steps li::before {
+      content: counter(s); position: absolute; left: 18px; top: 16px;
+      width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center;
+      background: var(--surface-var); color: var(--primary); font-weight: 800;
+    }
+    .steps b { display: block; margin-bottom: 2px; }
+    .steps span { color: var(--subtext); font-size: .95rem; }
+    code, pre { font-family: ui-monospace, Consolas, monospace; }
     pre {
-      background: var(--card); border: 1px solid var(--line); border-radius: 8px;
-      padding: 12px 14px; overflow-x: auto; color: var(--text);
+      background: var(--text); color: var(--bg); border-radius: 14px;
+      padding: 14px 16px; overflow-x: auto; font-size: .88rem; margin: 12px 0 0;
     }
-    a { color: var(--accent); }
+
+    .demo-note {
+      display: flex; gap: 12px; align-items: flex-start;
+      background: var(--surface); border: 1px dashed var(--secondary);
+      border-radius: 18px; padding: 16px 18px; color: var(--subtext); font-size: .95rem;
+    }
+    .demo-note b { color: var(--text); }
+
     footer {
-      margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
-      color: var(--sub); font-size: .9rem;
+      border-top: 1px solid var(--divider); padding: 28px 0 40px; color: var(--subtext); font-size: .92rem;
+    }
+    footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; gap: 28px; padding-top: 16px; }
+      .split { grid-template-columns: 1fr; }
+      nav a { margin-left: 12px; }
+      .phone-wrap { order: -1; }
+    }
+    @media (max-width: 480px) {
+      .wrap { padding: 0 16px; }
+      nav { display: none; }
+      .phone { width: 100%; max-width: 290px; }
     }
   </style>
 </head>
 <body>
-  <main>
-    <span class="badge">Código abierto · GPL-3.0</span>
-    <h1>BrownieNote</h1>
-    <p>Notas y tareas en un solo lugar, hechas con Flutter. Tus datos se guardan en tu dispositivo: no necesitas cuenta ni conexión.</p>
+  <div class="wrap">
+    <header class="top">
+      <a class="logo" href="#">
+        <span class="logo-mark">B</span> BrownieNote
+      </a>
+      <nav>
+        <a href="#funciones">Funciones</a>
+        <a href="#descargar">Descargar</a>
+        <a href="https://github.com/oscarrdel/BrownieNote">Código</a>
+      </nav>
+    </header>
 
-    <div class="notice">
-      <p><strong>Esta página es una demostración.</strong> BrownieNote es una app de código abierto que muestra lo que se puede construir con Flutter. Es un ejemplo de mi trabajo como desarrollador, no un servicio en línea.</p>
+    <div class="hero">
+      <div>
+        <span class="pill">Código abierto · GPL-3.0</span>
+        <h1>Tus notas y tareas, <span class="grad">en tu dispositivo.</span></h1>
+        <p class="lead">Cuadernos, notas por bloques, tareas con prioridad y calendario. Sin cuentas, sin servidores: todo se guarda donde lo usas.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="app/">Probar en el navegador</a>
+          <a class="btn btn-ghost" href="https://github.com/oscarrdel/BrownieNote/releases/latest">Descargar para Windows</a>
+        </div>
+        <p class="note">Versión de prueba en el navegador. Tus datos se quedan en ese navegador.</p>
+      </div>
+
+      <div class="phone-wrap" aria-hidden="true">
+        <div class="phone">
+          <div class="screen">
+            <h3>Hola 👋</h3>
+            <div class="meta">3 cuadernos · 2 tareas para hoy</div>
+
+            <div class="tile" style="background:#5C4EE5">
+              <div><b>Biología</b><br><small>12 notas · 2 conjuntos</small></div>
+              <span class="emoji">🧬</span>
+            </div>
+            <div class="tile" style="background:#E5524E">
+              <div><b>Proyecto final</b><br><small>5 notas</small></div>
+              <span class="emoji">🚀</span>
+            </div>
+            <div class="tile" style="background:#4EE5B0; color:#06241a">
+              <div><b>Ideas</b><br><small>8 notas</small></div>
+              <span class="emoji">💡</span>
+            </div>
+
+            <div class="task">
+              <span class="dot" style="background:#E5524E"></span>
+              Entregar informe
+              <span class="tag" style="background:#FDE7E6;color:#B3372F">Alta</span>
+            </div>
+            <div class="task">
+              <span class="dot" style="background:#E5A84E"></span>
+              Revisar apuntes
+              <span class="tag" style="background:#FBF0DE;color:#8A5E18">Media</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <h2>Lo que incluye</h2>
-    <ul class="features">
-      <li><strong>Cuadernos y conjuntos de notas</strong><span>Organiza tus notas en cuadernos y agrúpalas en conjuntos.</span></li>
-      <li><strong>Editor por bloques</strong><span>Texto, listas, títulos e imágenes en bloques.</span></li>
-      <li><strong>Tareas con prioridad</strong><span>Fechas, horas, prioridades y adjuntos. Vista de próximas tareas.</span></li>
-      <li><strong>Calendario</strong><span>Revisa las notas y tareas de cada día.</span></li>
-      <li><strong>Modo claro y oscuro</strong><span>Sigue la configuración de tu sistema.</span></li>
-    </ul>
+  <section id="funciones">
+    <div class="wrap">
+      <span class="eyebrow">Funciones</span>
+      <h2>Todo lo que necesitas, sin ruido.</h2>
+      <p class="sub">Una app pensada para organizar lo que estudias, lo que haces y lo que se te ocurre.</p>
 
-    <h2>Probarla en el navegador</h2>
-    <p>Puedes usar la versión web directamente aquí. Tus datos se guardan solo en tu navegador.</p>
-    <p><a href="/app/">Abrir BrownieNote en el navegador</a></p>
+      <div class="grid">
+        <article class="card">
+          <div class="icon" style="background:#5C4EE5">📓</div>
+          <h3>Cuadernos y conjuntos</h3>
+          <p>Organiza tus notas en cuadernos de colores y agrúpalas en conjuntos dentro de cada uno.</p>
+        </article>
+        <article class="card">
+          <div class="icon" style="background:#4E9EE5">🧱</div>
+          <h3>Editor por bloques</h3>
+          <p>Texto, listas, títulos e imágenes. Mueve bloques arrastrándolos y pliega las secciones que no uses.</p>
+        </article>
+        <article class="card">
+          <div class="icon" style="background:#E5524E">✅</div>
+          <h3>Tareas con prioridad</h3>
+          <p>Fechas, horas, prioridades y adjuntos. Una vista de próximas tareas te dice qué atender primero.</p>
+        </article>
+        <article class="card">
+          <div class="icon" style="background:#4EE5B0; color:#06241a">📅</div>
+          <h3>Calendario</h3>
+          <p>Mira las notas y tareas de cada día de un vistazo.</p>
+        </article>
+        <article class="card">
+          <div class="icon" style="background:#D74EE5">🌗</div>
+          <h3>Modo claro y oscuro</h3>
+          <p>Sigue la configuración de tu sistema, con colores pensados para leer a gusto.</p>
+        </article>
+        <article class="card">
+          <div class="icon" style="background:#E5A84E">🔒</div>
+          <h3>Privada por diseño</h3>
+          <p>Sin cuentas ni servidor. El código es público, así que puedes comprobarlo tú mismo.</p>
+        </article>
+      </div>
+    </div>
+  </section>
 
-    <h2>Descargarla</h2>
-    <p>Versión de escritorio para Windows (64 bits). Descomprime el zip y ejecuta <code>browninote.exe</code>.</p>
-    <p><a href="https://github.com/oscarrdel/BrownieNote/releases/latest">Descargar BrownieNote para Windows</a></p>
+  <section id="descargar">
+    <div class="wrap">
+      <div class="split">
+        <div class="panel">
+          <h3>Escritorio para Windows</h3>
+          <p>Descarga el zip, descomprímelo y ejecuta <code>browninote.exe</code>.</p>
+          <ul>
+            <li>Sin instalación</li>
+            <li>Funciona sin conexión</li>
+          </ul>
+          <p style="margin-top:18px"><a class="btn btn-ghost" href="https://github.com/oscarrdel/BrownieNote/releases/latest" style="color:var(--primary)">Descargar zip</a></p>
+        </div>
+        <div class="panel alt">
+          <h3>En el navegador</h3>
+          <p>Prueba la app sin instalar nada, directamente desde el navegador.</p>
+          <ul>
+            <li>Tus datos se quedan en este navegador</li>
+            <li>Los adjuntos tienen un límite de 2 MB</li>
+          </ul>
+          <p style="margin-top:18px"><a class="btn btn-primary" href="app/">Abrir BrownieNote</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <h2>Probarla</h2>
-    <p>El código está en GitHub. Para ejecutarla en tu computadora necesitas <a href="https://docs.flutter.dev/get-started/install">Flutter</a>:</p>
-    <pre>git clone https://github.com/oscarrdel/BrownieNote.git
+  <section>
+    <div class="wrap">
+      <span class="eyebrow">Compilar desde el código</span>
+      <h2>Hazla tuya.</h2>
+      <p class="sub">Necesitas <a href="https://docs.flutter.dev/get-started/install">Flutter</a>. Estos son los pasos:</p>
+      <ol class="steps">
+        <li><b>Clona el repo</b><span>git clone https://github.com/oscarrdel/BrownieNote.git</span></li>
+        <li><b>Instala dependencias</b><span>cd BrownieNote/browninote y luego flutter pub get</span></li>
+        <li><b>Ejecútala</b><span>flutter run, o flutter run -d chrome para la versión web</span></li>
+      </ol>
+      <pre>git clone https://github.com/oscarrdel/BrownieNote.git
 cd BrownieNote/browninote
 flutter pub get
 flutter run</pre>
+    </div>
+  </section>
 
-    <h2>Licencia</h2>
-    <p>BrownieNote se publica bajo la licencia <a href="https://www.gnu.org/licenses/gpl-3.0.html">GPL-3.0</a>. Puedes usar, estudiar, modificar y compartir el código bajo esos términos.</p>
+  <section>
+    <div class="wrap">
+      <div class="demo-note">
+        <span>ℹ️</span>
+        <div>
+          <b>Esta página es una demostración.</b> BrownieNote es una app de código abierto que muestra lo que se puede construir con Flutter. Es un ejemplo de mi trabajo, no un servicio en línea.
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <footer>
-      Hecha por Oscar Reyes con Flutter · <a href="https://github.com/oscarrdel/BrownieNote">Código en GitHub</a>
-    </footer>
-  </main>
+  <footer>
+    <div class="wrap">
+      <span>Hecha por Oscar Reyes con Flutter · Licencia GPL-3.0</span>
+      <span><a href="https://github.com/oscarrdel/BrownieNote">Código en GitHub</a></span>
+    </div>
+  </footer>
 </body>
 </html>
