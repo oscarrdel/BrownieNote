@@ -1,9 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/app_provider.dart';
 import 'screens/home_screen.dart';
 import 'theme/app_theme.dart';
+import 'widgets/web_notice.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +28,15 @@ class BrownieNoteApp extends StatelessWidget {
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: ThemeMode.system,
+      builder: (context, child) {
+        if (!kIsWeb || child == null) return child ?? const SizedBox.shrink();
+        return Column(
+          children: [
+            const WebNotice(),
+            Expanded(child: child),
+          ],
+        );
+      },
       home: const HomeScreen(),
     );
   }
