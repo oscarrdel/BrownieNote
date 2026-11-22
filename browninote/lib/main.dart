@@ -30,21 +30,17 @@ class BrownieNoteApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       builder: (context, child) {
         if (!kIsWeb || child == null) return child ?? const SizedBox.shrink();
-        // Tarjeta flotante encima de la app: no ocupa espacio ni tapa la app
-        // más que el área de la tarjeta.
+        // Tarjeta flotante en la esquina inferior izquierda: no empuja el
+        // diseño de la app.
         return Stack(
           children: [
             child,
             const Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
+              left: 12,
+              bottom: 12,
               child: SafeArea(
-                bottom: false,
-                child: Padding(
-                  padding: EdgeInsets.only(top: 10),
-                  child: Center(child: WebNotice()),
-                ),
+                top: false,
+                child: WebNotice(),
               ),
             ),
           ],
